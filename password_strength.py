@@ -44,10 +44,10 @@ def is_password_not_in_blacklist(password, blacklist_file_path):
     prohibition of words found in a password blacklist
     '''
     lower_password = password.lower()
-    for line in open(blacklist_file_path):
-        lower_line = line.lower().rstrip('\n\r')
+    for line_fron_file in open(blacklist_file_path):
+        lower_line = line_fron_file.lower().rstrip('\n\r')
         if lower_line in lower_password or lower_password in lower_line:
-            return line
+            return line_fron_file
     return True
 
 
@@ -61,10 +61,10 @@ def is_pass_not_contains_famous_names(password, famous_names_list_file_path):
     U.S. State Names
     '''
     lower_password = password.lower()
-    for line in open(famous_names_list_file_path):
-        lower_line = line.lower().rstrip('\n\r')
+    for line_from_file in open(famous_names_list_file_path):
+        lower_line = line_from_file.lower().rstrip('\n\r')
         if lower_line in lower_password or lower_password in lower_line:
-            return line
+            return line_from_file
     return True
 
 
@@ -73,10 +73,10 @@ def is_pass_not_contains_topcompanies(password, topcompanies_list_file_path):
     prohibition of use of company name or an abbreviation
     '''
     lower_password = password.lower()
-    for line in open(topcompanies_list_file_path):
-        lower_line = line.lower().rstrip('\n\r')
+    for line_from_file in open(topcompanies_list_file_path):
+        lower_line = line_from_file.lower().rstrip('\n\r')
         if (lower_line in lower_password) or (lower_password in lower_line):
-            return line
+            return line_from_file
     return True
 
 
@@ -150,47 +150,47 @@ def get_password_strength(password, blacklist_path, topnames_path, topcompanies_
     else:
         print(u'Что нибудь слышал про !@#$%^&*( ?')
 
-    res = is_password_not_in_blacklist(password, blacklist_path)
-    if res is True:
+    check_result = is_password_not_in_blacklist(password, blacklist_path)
+    if check_result is True:
         strenght += 1
         if verbose: print(u'>>> Пароль прошёл проверку на blacklist')
     else:
-        print(u'Уоу-уоу. Твой пароль в чёрном списке. Придумай что-нибудь пооригинальнее! Вот что мы нашли: {}'.format(res))
+        print(u'Уоу-уоу. Твой пароль в чёрном списке. Придумай что-нибудь пооригинальнее! Вот что мы нашли: {}'.format(check_result))
 
-    res = is_pass_not_contains_famous_names(password, topnames_path)
-    if res is True:
+    check_result = is_pass_not_contains_famous_names(password, topnames_path)
+    if check_result is True:
         strenght += 1
         if verbose: print(u'>>> Пароль прошёл проверку на наличие распространённых имён')
     else:
-        print(u'Ты чё! Никаких распространённых имён в пароле! Вот что мы нашли: {}'.format(res))
+        print(u'Ты чё! Никаких распространённых имён в пароле! Вот что мы нашли: {}'.format(check_result))
 
-    res = is_pass_not_contains_topcompanies(password, topcompanies_path)
-    if res is True:
+    check_result = is_pass_not_contains_topcompanies(password, topcompanies_path)
+    if check_result is True:
         strenght += 1
         if verbose: print(u'>>> Пароль прошёл проверку на наличие имён известных компаний')
     else:
-        print(u'Не стоит указывать в пароле имена компаний, которые у всех на слуху. Вот что мы нашли: {}'.format(res))
+        print(u'Не стоит указывать в пароле имена компаний, которые у всех на слуху. Вот что мы нашли: {}'.format(check_result))
 
-    res = is_pass_not_match_calendar_date(password)
-    if res is True:
+    check_result = is_pass_not_match_calendar_date(password)
+    if check_result is True:
         strenght += 1
         if verbose: print(u'>>> Пароль прошёл проверку на наличие даты')
     else:
-        print(u'Для опытного сыщика не составит труда найти твою дату рождения. Не стоит использовать подобные сведения в пароле. Вот что мы нашли: {}'.format(res))
+        print(u'Для опытного сыщика не составит труда найти твою дату рождения. Не стоит использовать подобные сведения в пароле. Вот что мы нашли: {}'.format(check_result))
 
-    res = is_pass_not_match_license_plate(password)
-    if res is True:
+    check_result = is_pass_not_match_license_plate(password)
+    if check_result is True:
         strenght += 1
         if verbose: print(u'>>> Пароль прошёл проверку на наличие автомобильного номера')
     else:
-        print(u'Для опытного сыщика не составит труда найти твой номер автомобиля. Не стоит использовать подобные сведения в пароле. Вот что мы нашли: {}'.format(res))
+        print(u'Для опытного сыщика не составит труда найти твой номер автомобиля. Не стоит использовать подобные сведения в пароле. Вот что мы нашли: {}'.format(check_result))
 
-    res = is_pass_not_match_phone_number(password)
-    if res is True:
+    check_result = is_pass_not_match_phone_number(password)
+    if check_result is True:
         strenght += 1
         if verbose: print(u'>>> Пароль прошёл на наличие мобильного телефона')
     else:
-        print(u'Для опытного сыщика не составит труда найти твой телефонный номер. Не стоит использовать подобные сведения в пароле. Вот что мы нашли: {}'.format(res))
+        print(u'Для опытного сыщика не составит труда найти твой телефонный номер. Не стоит использовать подобные сведения в пароле. Вот что мы нашли: {}'.format(check_result))
 
     return strenght
 
