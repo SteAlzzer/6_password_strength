@@ -279,7 +279,7 @@ def main(options, arguments):
 
 
 if __name__ == '__main__':
-    usage = 'Usage: %prog password [-v] [-b blacklist_filepath] [-t topnames_filepath] [-c topcompanies_filepath]'
+    usage = 'Usage: %prog password [-v]'
     parser = OptionParser(usage=usage)
     parser.add_option('-v', '--verbose', action='store_true', default=False, help='Выводить чуть больше информации')
 
