@@ -7,6 +7,7 @@ from optparse import OptionParser
 blacklist_default_path = './blacklist.txt'
 topnames_default_path = './top_names.txt'
 topcompanies_default_path = './top_companies.txt'
+min_length_for_password = 12
 #########
 
 
@@ -14,30 +15,21 @@ def is_pass_long_enough(password):
     '''
     Функция проверяет пароль на длину
     '''
-    if len(password) > 12:
-        return True
-    else:
-        return False
+    return len(password) > min_length_for_password
 
 
 def is_pass_case_sensivite(password):
     '''
     the use of both upper-case and lower-case letters (case sensitivity)
     '''
-    if not password.isupper() and not password.islower():
-        return True
-    else:
-        return False
+    return not password.isupper() and not password.islower()
 
 
 def is_pass_contains_digit(password):
     '''
     inclusion of one or more numerical digits
     '''
-    if re.search('[0-9]', password):
-        return True
-    else:
-        return False
+    return bool(re.search('[0-9]', password))
 
 
 def is_pass_contains_specchar(password):
@@ -48,21 +40,24 @@ def is_pass_contains_specchar(password):
     for char in string.punctuation:
         reg_exp_string += '\\' + char
     reg_exp_string += ']'
-    if re.search(reg_exp_string, password):
-        return True
-    else:
-        return False
+    return bool(re.search(reg_exp_string, password))
 
+
+def compare_word_to_file(word, filepath):
+	for line in open(filepath):
+        lower_line = line.lower().rstrip('\n\r')
+        if lower_line in word or word in lower_line:
+            return line
+    return False
 
 def is_password_not_in_blacklist(password, blacklist_file_path=blacklist_default_path):
     '''
     prohibition of words found in a password blacklist
     '''
     lower_password = password.lower()
-    for line in open(blacklist_file_path):
-        lower_line = line.lower().rstrip('\n\r')
-        if lower_line in lower_password or lower_password in lower_line:
-            return line
+    result = compare_word_to_file(lower_password, blacklist_file_path)
+    if result:
+    	return result
     return True
 
 
